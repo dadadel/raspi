@@ -1,2 +1,4 @@
+echo in > /sys/class/gpio/gpio${1}/direction
+
 cat /sys/class/gpio/gpio${1}/value
 
