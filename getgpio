@@ -1,6 +1,16 @@
-echo $1 > /sys/class/gpio/export
-
-echo in > /sys/class/gpio/gpio${1}/direction
-
+file="/sys/class/gpio/gpio${1}/value"
+if ! [ -f $file ] ; then
+  echo $1 > /sys/class/gpio/export
+fi
+if ! [ -f $file ] ; then
+  echo Failed to export GPIO$1
+  exit 1
+fi
+if [ `cat /sys/class/gpio/gpio${1}/direction` == "out" ] ; then
+  echo in > /sys/class/gpio/gpio${1}/direction
+fi
+if [ `cat /sys/class/gpio/gpio${1}/direction` == "out" ] ; then
+  echo Failed to set GPIO$1 direction to IN
+  exit 1
+fi
 cat /sys/class/gpio/gpio${1}/value
-
